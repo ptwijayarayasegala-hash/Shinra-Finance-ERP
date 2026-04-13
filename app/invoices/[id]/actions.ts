@@ -4,7 +4,8 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getAccessContext, validateCompanyAccess } from '@/lib/access'
-import { calcTax } from '@/lib/utils'
+import { calcTaxByType } from '@/lib/utils'
+import type { TaxType } from '@/lib/types/finance'
 
 function finish(invoiceId: string, message: string, type: 'success' | 'error' = 'success') {
   revalidatePath(`/invoices/${invoiceId}`)
@@ -30,8 +31,13 @@ export async function updateInvoiceMetaAction(formData: FormData) {
     .update({
       customer_id: formData.get('customer_id')?.toString() || null,
       customer_name: customerName,
+      customer_address: formData.get('customer_address')?.toString().trim() || null,
+      customer_npwp: formData.get('customer_npwp')?.toString().trim() || null,
       invoice_date: formData.get('invoice_date')?.toString(),
       due_date: formData.get('due_date')?.toString() || null,
+      po_reference: formData.get('po_reference')?.toString().trim() || null,
+      quo_reference: formData.get('quo_reference')?.toString().trim() || null,
+      spk_reference: formData.get('spk_reference')?.toString().trim() || null,
       notes: formData.get('notes')?.toString().trim() || null,
     })
     .eq('id', invoiceId)
@@ -48,26 +54,31 @@ export async function upsertInvoiceItemsAction(formData: FormData) {
   if (!user) redirect('/login')
 
   const invoiceId = formData.get('invoice_id')?.toString()!
-  const isTaxable = formData.get('is_taxable') === 'true'
+  const taxType = (formData.get('tax_type')?.toString() ?? 'none') as TaxType
   const itemCount = parseInt(formData.get('item_count')?.toString() ?? '0', 10)
 
-  // Parse items dari form fields
+  // Parse items dari form fields (termasuk sub-items)
   const items = []
   for (let i = 0; i < itemCount; i++) {
     const description = formData.get(`item_description_${i}`)?.toString().trim()
+    const itemType = (formData.get(`item_type_${i}`)?.toString() ?? 'main') as 'main' | 'sub'
+    const subLabel = formData.get(`item_sub_label_${i}`)?.toString() || null
     const quantity = parseFloat(formData.get(`item_quantity_${i}`)?.toString() ?? '0')
     const unitPrice = parseFloat(formData.get(`item_unit_price_${i}`)?.toString() ?? '0')
     const productId = formData.get(`item_product_id_${i}`)?.toString() || null
 
-    if (!description || quantity <= 0) continue
+    if (!description) continue
+    if (itemType === 'main' && quantity <= 0) continue
     items.push({
       invoice_id: invoiceId,
       product_id: productId,
       description,
-      quantity,
-      unit_price: unitPrice,
-      line_total: quantity * unitPrice,
+      quantity: itemType === 'sub' ? 0 : quantity,
+      unit_price: itemType === 'sub' ? 0 : unitPrice,
+      line_total: itemType === 'sub' ? 0 : quantity * unitPrice,
       sort_order: i,
+      item_type: itemType,
+      sub_label: subLabel,
     })
   }
 
@@ -80,12 +91,12 @@ export async function upsertInvoiceItemsAction(formData: FormData) {
 
   // Hitung ulang subtotal dan tax
   const subtotal = items.reduce((sum, item) => sum + item.line_total, 0)
-  const { dpp, taxAmount, total } = isTaxable ? calcTax(subtotal) : { dpp: 0, taxAmount: 0, total: subtotal }
+  const { dpp, taxAmount, total, isTaxable } = calcTaxByType(subtotal, taxType)
 
   const { error: updateError } = await supabase
     .schema('finance')
     .from('invoices')
-    .update({ is_taxable: isTaxable, subtotal, dpp, tax_amount: taxAmount, total })
+    .update({ tax_type: taxType, is_taxable: isTaxable, subtotal, dpp, tax_amount: taxAmount, total })
     .eq('id', invoiceId)
 
   if (updateError) finish(invoiceId, `Gagal update total: ${updateError.message}`, 'error')

@@ -3,15 +3,24 @@
 import { useState } from 'react'
 import { Download } from 'lucide-react'
 import type { InvoiceRecord, InvoiceItemRecord } from '@/lib/types/finance'
+import type { Company } from '@/lib/types'
 
-export function InvoicePDFButton({ invoice, items }: { invoice: InvoiceRecord; items: InvoiceItemRecord[] }) {
+export function InvoicePDFButton({
+  invoice,
+  items,
+  company,
+}: {
+  invoice: InvoiceRecord
+  items: InvoiceItemRecord[]
+  company: Company | null
+}) {
   const [loading, setLoading] = useState(false)
 
   async function handleDownload() {
     setLoading(true)
     try {
       const { buildInvoicePDF } = await import('@/lib/pdf/invoice-pdf')
-      const doc = buildInvoicePDF(invoice, items)
+      const doc = await buildInvoicePDF(invoice, items, company)
       doc.save(`${invoice.invoice_number}.pdf`)
     } finally {
       setLoading(false)

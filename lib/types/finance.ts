@@ -1,6 +1,7 @@
 // ─── Invoice ──────────────────────────────────────────────────────────────────
 
 export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'cancelled'
+export type TaxType = 'ppn' | 'pph23' | 'none'
 
 export interface InvoiceRecord {
   id: string
@@ -8,10 +9,16 @@ export interface InvoiceRecord {
   invoice_number: string
   customer_id: string | null
   customer_name: string
+  customer_address: string | null
+  customer_npwp: string | null
   invoice_date: string
   due_date: string | null
+  po_reference: string | null
+  quo_reference: string | null
+  spk_reference: string | null
   subtotal: number
   is_taxable: boolean
+  tax_type: TaxType
   dpp: number
   tax_amount: number
   total: number
@@ -34,6 +41,8 @@ export interface InvoiceItemRecord {
   unit_price: number
   line_total: number
   sort_order: number
+  item_type: 'main' | 'sub'
+  sub_label: string | null
   created_at: string
 }
 
@@ -61,10 +70,14 @@ export interface PORecord {
   po_number: string
   vendor_id: string | null
   vendor_name: string
+  vendor_address: string | null
+  vendor_npwp: string | null
   po_date: string
   expected_date: string | null
+  ref_invoice: string | null
   subtotal: number
   is_taxable: boolean
+  tax_type: TaxType
   dpp: number
   tax_amount: number
   total: number
@@ -87,6 +100,8 @@ export interface POItemRecord {
   unit_price: number
   line_total: number
   sort_order: number
+  item_type: 'main' | 'sub'
+  sub_label: string | null
   created_at: string
 }
 

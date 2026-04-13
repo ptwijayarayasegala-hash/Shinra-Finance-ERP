@@ -3,15 +3,24 @@
 import { useState } from 'react'
 import { Download } from 'lucide-react'
 import type { PORecord, POItemRecord } from '@/lib/types/finance'
+import type { Company } from '@/lib/types'
 
-export function POPDFButton({ po, items }: { po: PORecord; items: POItemRecord[] }) {
+export function POPDFButton({
+  po,
+  items,
+  company,
+}: {
+  po: PORecord
+  items: POItemRecord[]
+  company: Company | null
+}) {
   const [loading, setLoading] = useState(false)
 
   async function handleDownload() {
     setLoading(true)
     try {
       const { buildPOPDF } = await import('@/lib/pdf/po-pdf')
-      const doc = buildPOPDF(po, items)
+      const doc = await buildPOPDF(po, items, company)
       doc.save(`${po.po_number}.pdf`)
     } finally {
       setLoading(false)

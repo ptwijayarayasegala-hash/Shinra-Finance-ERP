@@ -3,7 +3,8 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { calcTax } from '@/lib/utils'
+import { calcTaxByType } from '@/lib/utils'
+import type { TaxType } from '@/lib/types/finance'
 
 function finish(poId: string, message: string, type: 'success' | 'error' = 'success') {
   revalidatePath(`/purchase-orders/${poId}`)
@@ -27,8 +28,11 @@ export async function updatePOMetaAction(formData: FormData) {
     .update({
       vendor_id: formData.get('vendor_id')?.toString() || null,
       vendor_name: vendorName,
+      vendor_address: formData.get('vendor_address')?.toString().trim() || null,
+      vendor_npwp: formData.get('vendor_npwp')?.toString().trim() || null,
       po_date: formData.get('po_date')?.toString(),
       expected_date: formData.get('expected_date')?.toString() || null,
+      ref_invoice: formData.get('ref_invoice')?.toString().trim() || null,
       notes: formData.get('notes')?.toString().trim() || null,
     })
     .eq('id', poId)
@@ -43,17 +47,30 @@ export async function upsertPOItemsAction(formData: FormData) {
   if (!user) redirect('/login')
 
   const poId = formData.get('po_id')?.toString()!
-  const isTaxable = formData.get('is_taxable') === 'true'
+  const taxType = (formData.get('tax_type')?.toString() ?? 'none') as TaxType
   const itemCount = parseInt(formData.get('item_count')?.toString() ?? '0', 10)
 
   const items = []
   for (let i = 0; i < itemCount; i++) {
     const description = formData.get(`item_description_${i}`)?.toString().trim()
+    const itemType = (formData.get(`item_type_${i}`)?.toString() ?? 'main') as 'main' | 'sub'
+    const subLabel = formData.get(`item_sub_label_${i}`)?.toString() || null
     const quantity = parseFloat(formData.get(`item_quantity_${i}`)?.toString() ?? '0')
     const unitPrice = parseFloat(formData.get(`item_unit_price_${i}`)?.toString() ?? '0')
     const productId = formData.get(`item_product_id_${i}`)?.toString() || null
-    if (!description || quantity <= 0) continue
-    items.push({ po_id: poId, product_id: productId, description, quantity, unit_price: unitPrice, line_total: quantity * unitPrice, sort_order: i })
+    if (!description) continue
+    if (itemType === 'main' && quantity <= 0) continue
+    items.push({
+      po_id: poId,
+      product_id: productId,
+      description,
+      quantity: itemType === 'sub' ? 0 : quantity,
+      unit_price: itemType === 'sub' ? 0 : unitPrice,
+      line_total: itemType === 'sub' ? 0 : quantity * unitPrice,
+      sort_order: i,
+      item_type: itemType,
+      sub_label: subLabel,
+    })
   }
 
   await supabase.schema('finance').from('po_items').delete().eq('po_id', poId)
@@ -63,12 +80,12 @@ export async function upsertPOItemsAction(formData: FormData) {
   }
 
   const subtotal = items.reduce((sum, item) => sum + item.line_total, 0)
-  const { dpp, taxAmount, total } = isTaxable ? calcTax(subtotal) : { dpp: 0, taxAmount: 0, total: subtotal }
+  const { dpp, taxAmount, total, isTaxable } = calcTaxByType(subtotal, taxType)
 
   const { error: updateError } = await supabase
     .schema('finance')
     .from('purchase_orders')
-    .update({ is_taxable: isTaxable, subtotal, dpp, tax_amount: taxAmount, total })
+    .update({ tax_type: taxType, is_taxable: isTaxable, subtotal, dpp, tax_amount: taxAmount, total })
     .eq('id', poId)
 
   if (updateError) finish(poId, `Gagal update total: ${updateError.message}`, 'error')

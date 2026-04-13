@@ -45,7 +45,7 @@ export async function getAllowedCompanyOptions(access: AccessContext) {
   let query = supabase
     .schema('core')
     .from('companies')
-    .select('id, name, color, type, logo_url, prefix')
+    .select('id, name, color, type, logo_url, prefix, address, npwp, phone, email, website, bank_name, bank_account_number, bank_account_name, color_secondary, color_accent, signed_by_name, signed_by_title')
     .eq('is_active', true)
     .order('name', { ascending: true })
 

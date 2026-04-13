@@ -12,6 +12,19 @@ export interface Company {
   type: string | null
   logo_url: string | null
   prefix: string | null
+  // Extended profile fields (fase-6)
+  address: string | null
+  npwp: string | null
+  phone: string | null
+  email: string | null
+  website: string | null
+  bank_name: string | null
+  bank_account_number: string | null
+  bank_account_name: string | null
+  color_secondary: string | null
+  color_accent: string | null
+  signed_by_name: string | null
+  signed_by_title: string | null
 }
 
 export interface Membership {
