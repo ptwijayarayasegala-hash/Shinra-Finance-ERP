@@ -57,7 +57,7 @@ export default async function InvoiceDetailPage({ params, searchParams }: Props)
     <AppShell>
       <div className="space-y-6">
         {/* Back */}
-        <Link href="/invoices" className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900">
+        <Link href="/invoices" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="size-4" />
           Kembali ke daftar invoice
         </Link>
@@ -70,12 +70,12 @@ export default async function InvoiceDetailPage({ params, searchParams }: Props)
         )}
 
         {/* Header */}
-        <div className="rounded-[1.6rem] border border-black/10 bg-stone-950 p-4 text-stone-50 sm:p-6">
+        <div className="rounded-[1.6rem] border border-primary/20 bg-primary p-4 text-primary-foreground sm:p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs text-stone-400 mb-1">Invoice</p>
+              <p className="text-xs text-primary-foreground/60 mb-1">Invoice</p>
               <h1 className="text-xl font-bold sm:text-2xl">{invoice.invoice_number}</h1>
-              <p className="mt-1 text-sm text-stone-300">{invoice.customer_name}</p>
+              <p className="mt-1 text-sm text-primary-foreground/80">{invoice.customer_name}</p>
             </div>
             <div className="flex flex-col items-end gap-2">
               <InvoiceStatusBadge status={invoice.status as InvoiceStatus} />
@@ -115,78 +115,78 @@ export default async function InvoiceDetailPage({ params, searchParams }: Props)
         )}
 
         {/* Info Invoice */}
-        <div className="rounded-[1.25rem] border border-stone-200 bg-white p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-stone-900">Detail Invoice</h2>
+        <div className="rounded-[1.25rem] border border-border bg-card p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-foreground">Detail Invoice</h2>
           {isEditable ? (
             <form action={updateInvoiceMetaAction} className="space-y-4">
               <input type="hidden" name="invoice_id" value={invoice.id} />
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">Customer</label>
-                  <select name="customer_id" defaultValue={invoice.customer_id ?? ''} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none">
+                  <label className="text-xs font-medium text-muted-foreground">Customer</label>
+                  <select name="customer_id" defaultValue={invoice.customer_id ?? ''} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none">
                     <option value="">— Tidak ada —</option>
                     {customers.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">Nama di Invoice *</label>
-                  <input type="text" name="customer_name" defaultValue={invoice.customer_name} required className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">Nama di Invoice *</label>
+                  <input type="text" name="customer_name" defaultValue={invoice.customer_name} required className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">NPWP Customer</label>
-                  <input type="text" name="customer_npwp" defaultValue={invoice.customer_npwp ?? ''} placeholder="contoh: 0139 0653 6106 8000" className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">NPWP Customer</label>
+                  <input type="text" name="customer_npwp" defaultValue={invoice.customer_npwp ?? ''} placeholder="contoh: 0139 0653 6106 8000" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">Tanggal Invoice</label>
-                  <input type="date" name="invoice_date" defaultValue={invoice.invoice_date} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">Tanggal Invoice</label>
+                  <input type="date" name="invoice_date" defaultValue={invoice.invoice_date} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">Jatuh Tempo</label>
-                  <input type="date" name="due_date" defaultValue={invoice.due_date ?? ''} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">Jatuh Tempo</label>
+                  <input type="date" name="due_date" defaultValue={invoice.due_date ?? ''} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">No. PO Referensi</label>
-                  <input type="text" name="po_reference" defaultValue={invoice.po_reference ?? ''} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">No. PO Referensi</label>
+                  <input type="text" name="po_reference" defaultValue={invoice.po_reference ?? ''} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">No. Quo Referensi</label>
-                  <input type="text" name="quo_reference" defaultValue={invoice.quo_reference ?? ''} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">No. Quo Referensi</label>
+                  <input type="text" name="quo_reference" defaultValue={invoice.quo_reference ?? ''} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">No. SPK Referensi</label>
-                  <input type="text" name="spk_reference" defaultValue={invoice.spk_reference ?? ''} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">No. SPK Referensi</label>
+                  <input type="text" name="spk_reference" defaultValue={invoice.spk_reference ?? ''} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Alamat Customer</label>
-                <textarea name="customer_address" rows={2} defaultValue={invoice.customer_address ?? ''} placeholder="Jl. Contoh No. 1, Jakarta Selatan" className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none resize-none" />
+                <label className="text-xs font-medium text-muted-foreground">Alamat Customer</label>
+                <textarea name="customer_address" rows={2} defaultValue={invoice.customer_address ?? ''} placeholder="Jl. Contoh No. 1, Jakarta Selatan" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none resize-none" />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Catatan</label>
-                <textarea name="notes" rows={2} defaultValue={invoice.notes ?? ''} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none resize-none" />
+                <label className="text-xs font-medium text-muted-foreground">Catatan</label>
+                <textarea name="notes" rows={2} defaultValue={invoice.notes ?? ''} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none resize-none" />
               </div>
-              <SubmitButton className="rounded-lg bg-stone-950 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800">
+              <SubmitButton className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Simpan Perubahan
               </SubmitButton>
             </form>
           ) : (
             <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
-              <div><dt className="text-xs text-stone-400">Customer</dt><dd className="font-medium">{invoice.customer_name}</dd></div>
-              {invoice.customer_npwp && <div><dt className="text-xs text-stone-400">NPWP Customer</dt><dd>{invoice.customer_npwp}</dd></div>}
-              <div><dt className="text-xs text-stone-400">Tanggal</dt><dd>{invoice.invoice_date}</dd></div>
-              {invoice.due_date && <div><dt className="text-xs text-stone-400">Jatuh Tempo</dt><dd>{invoice.due_date}</dd></div>}
-              {invoice.po_reference && <div><dt className="text-xs text-stone-400">No. PO</dt><dd>{invoice.po_reference}</dd></div>}
-              {invoice.quo_reference && <div><dt className="text-xs text-stone-400">No. Quo</dt><dd>{invoice.quo_reference}</dd></div>}
-              {invoice.spk_reference && <div><dt className="text-xs text-stone-400">No. SPK</dt><dd>{invoice.spk_reference}</dd></div>}
-              {invoice.customer_address && <div className="col-span-2 sm:col-span-3"><dt className="text-xs text-stone-400">Alamat Customer</dt><dd>{invoice.customer_address}</dd></div>}
-              {invoice.notes && <div className="col-span-2 sm:col-span-3"><dt className="text-xs text-stone-400">Catatan</dt><dd>{invoice.notes}</dd></div>}
+              <div><dt className="text-xs text-muted-foreground">Customer</dt><dd className="font-medium">{invoice.customer_name}</dd></div>
+              {invoice.customer_npwp && <div><dt className="text-xs text-muted-foreground">NPWP Customer</dt><dd>{invoice.customer_npwp}</dd></div>}
+              <div><dt className="text-xs text-muted-foreground">Tanggal</dt><dd>{invoice.invoice_date}</dd></div>
+              {invoice.due_date && <div><dt className="text-xs text-muted-foreground">Jatuh Tempo</dt><dd>{invoice.due_date}</dd></div>}
+              {invoice.po_reference && <div><dt className="text-xs text-muted-foreground">No. PO</dt><dd>{invoice.po_reference}</dd></div>}
+              {invoice.quo_reference && <div><dt className="text-xs text-muted-foreground">No. Quo</dt><dd>{invoice.quo_reference}</dd></div>}
+              {invoice.spk_reference && <div><dt className="text-xs text-muted-foreground">No. SPK</dt><dd>{invoice.spk_reference}</dd></div>}
+              {invoice.customer_address && <div className="col-span-2 sm:col-span-3"><dt className="text-xs text-muted-foreground">Alamat Customer</dt><dd>{invoice.customer_address}</dd></div>}
+              {invoice.notes && <div className="col-span-2 sm:col-span-3"><dt className="text-xs text-muted-foreground">Catatan</dt><dd>{invoice.notes}</dd></div>}
             </dl>
           )}
         </div>
 
         {/* Line Items */}
-        <div className="rounded-[1.25rem] border border-stone-200 bg-white p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-stone-900">Item</h2>
+        <div className="rounded-[1.25rem] border border-border bg-card p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-foreground">Item</h2>
           {isEditable ? (
             <form action={upsertInvoiceItemsAction} className="space-y-4">
               <input type="hidden" name="invoice_id" value={invoice.id} />
@@ -205,50 +205,50 @@ export default async function InvoiceDetailPage({ params, searchParams }: Props)
                 taxType={(invoice.tax_type ?? 'none') as TaxType}
               />
 
-              <SubmitButton className="rounded-lg bg-stone-950 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800">
+              <SubmitButton className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Simpan Item
               </SubmitButton>
             </form>
           ) : (
             <div className="space-y-3">
               {items.map((item) => (
-                <div key={item.id} className={`flex justify-between gap-4 text-sm ${item.item_type === 'sub' ? 'pl-5 text-stone-500' : ''}`}>
+                <div key={item.id} className={`flex justify-between gap-4 text-sm ${item.item_type === 'sub' ? 'pl-5 text-muted-foreground' : ''}`}>
                   <div>
-                    <p className={item.item_type === 'sub' ? 'text-stone-500' : 'font-medium'}>
-                      {item.item_type === 'sub' && <span className="mr-1 text-xs text-stone-400">{item.sub_label}.</span>}
+                    <p className={item.item_type === 'sub' ? 'text-muted-foreground' : 'font-medium'}>
+                      {item.item_type === 'sub' && <span className="mr-1 text-xs text-muted-foreground">{item.sub_label}.</span>}
                       {item.description}
                     </p>
                     {item.item_type === 'main' && (
-                      <p className="text-xs text-stone-400">{item.quantity} × {formatRupiah(item.unit_price)}</p>
+                      <p className="text-xs text-muted-foreground">{item.quantity} × {formatRupiah(item.unit_price)}</p>
                     )}
                   </div>
                   <p className="font-medium tabular-nums shrink-0">{item.item_type === 'sub' ? '-' : formatRupiah(item.line_total)}</p>
                 </div>
               ))}
-              <div className="border-t border-stone-100 pt-3 space-y-1">
-                <div className="flex justify-between text-sm text-stone-600">
+              <div className="border-t border-border/50 pt-3 space-y-1">
+                <div className="flex justify-between text-sm text-muted-foreground">
                   <span>Subtotal</span>
                   <span className="tabular-nums">{formatRupiah(invoice.subtotal)}</span>
                 </div>
                 {invoice.tax_type === 'ppn' && (
                   <>
-                    <div className="flex justify-between text-sm text-stone-500">
+                    <div className="flex justify-between text-sm text-muted-foreground">
                       <span>DPP (11/12)</span>
                       <span className="tabular-nums">{formatRupiah(invoice.dpp)}</span>
                     </div>
-                    <div className="flex justify-between text-sm text-stone-500">
+                    <div className="flex justify-between text-sm text-muted-foreground">
                       <span>PPN 12%</span>
                       <span className="tabular-nums">{formatRupiah(invoice.tax_amount)}</span>
                     </div>
                   </>
                 )}
                 {invoice.tax_type === 'pph23' && (
-                  <div className="flex justify-between text-sm text-stone-500">
+                  <div className="flex justify-between text-sm text-muted-foreground">
                     <span>PPh 23 2%</span>
                     <span className="tabular-nums text-red-600">({formatRupiah(invoice.tax_amount)})</span>
                   </div>
                 )}
-                <div className="flex justify-between font-semibold text-stone-900 pt-1">
+                <div className="flex justify-between font-semibold text-foreground pt-1">
                   <span>Total</span>
                   <span className="tabular-nums">{formatRupiah(invoice.total)}</span>
                 </div>

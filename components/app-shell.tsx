@@ -37,9 +37,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-stone-50 lg:flex-row">
+    <div className="flex flex-col min-h-screen bg-background lg:flex-row">
       {/* Mobile Header */}
-      <header className="sticky top-0 z-40 flex w-full items-center justify-between border-b border-stone-200 bg-white/80 px-4 py-3 backdrop-blur lg:hidden">
+      <header className="sticky top-0 z-40 flex w-full items-center justify-between border-b border-border bg-card/80 px-4 py-3 backdrop-blur lg:hidden">
         <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
           {activeCompany ? (
             <span
@@ -47,9 +47,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               style={{ backgroundColor: activeCompany.color }}
             />
           ) : (
-            <Building2 className="size-4 shrink-0 text-stone-500" />
+            <Building2 className="size-4 shrink-0 text-muted-foreground" />
           )}
-          <span className="text-sm font-semibold tracking-tight text-stone-900 truncate">
+          <span className="text-sm font-semibold tracking-tight text-foreground truncate">
             {activeCompany?.name || 'Pilih Company'}
           </span>
         </div>
@@ -57,7 +57,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       {/* Mobile Company Switcher */}
       {memberships.length > 0 && (
-        <div className="flex w-full gap-2 overflow-x-auto border-b border-stone-200 bg-white px-4 py-2 lg:hidden hide-scrollbar touch-pan-x overscroll-x-contain">
+        <div className="flex w-full gap-2 overflow-x-auto border-b border-border bg-card px-4 py-2 lg:hidden hide-scrollbar touch-pan-x overscroll-x-contain">
           {memberships.map((membership) => {
             const isActive = activeCompany?.id === membership.company_id
             return (
@@ -68,8 +68,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 className={cn(
                   'flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors',
                   isActive
-                    ? 'border-stone-950 bg-stone-950 text-white'
-                    : 'border-stone-200 bg-stone-50 text-stone-600 hover:border-stone-300'
+                    ? 'border-primary bg-primary text-primary-foreground'
+                    : 'border-border bg-muted text-muted-foreground hover:border-border/80'
                 )}
               >
                 <span
@@ -84,19 +84,19 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Desktop Sidebar */}
-      <aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:flex lg:w-72 lg:flex-col lg:border-r lg:border-stone-200 lg:bg-white lg:p-6 lg:shadow-sm">
+      <aside className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:flex lg:w-72 lg:flex-col lg:border-r lg:border-border lg:bg-sidebar lg:p-6 lg:shadow-sm">
         <div className="flex flex-col gap-6 h-full">
           {/* Brand */}
-          <div className="inline-flex items-center gap-2 rounded-lg border border-black/10 bg-stone-100 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-stone-700">
+          <div className="inline-flex items-center gap-2 rounded-lg border border-border bg-muted px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.2em] text-foreground">
             Shinra Finance
           </div>
 
           {/* User Profile */}
-          <div className="rounded-[1.25rem] border border-stone-200 bg-stone-50/50 p-4">
-            <p className="text-sm font-semibold text-stone-900 mb-0.5">{user?.name}</p>
-            <p className="text-xs text-stone-500 mb-4 truncate">{user?.email}</p>
+          <div className="rounded-[1.25rem] border border-border bg-muted/50 p-4">
+            <p className="text-sm font-semibold text-foreground mb-0.5">{user?.name}</p>
+            <p className="text-xs text-muted-foreground mb-4 truncate">{user?.email}</p>
 
-            <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-stone-400 mb-2">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-2">
               Company Aktif
             </p>
             <div className="flex flex-col gap-1.5">
@@ -110,8 +110,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     className={cn(
                       'flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-xs font-medium transition-colors',
                       isActive
-                        ? 'bg-stone-950 text-white'
-                        : 'text-stone-600 hover:bg-stone-200/50'
+                        ? 'bg-primary text-primary-foreground'
+                        : 'text-muted-foreground hover:bg-accent/50'
                     )}
                   >
                     <span
@@ -120,7 +120,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     />
                     <span className="truncate">{membership.company.name}</span>
                     {membership.company.prefix && (
-                      <span className={cn('ml-auto text-[10px] font-bold tracking-wide', isActive ? 'text-stone-400' : 'text-stone-400')}>
+                      <span className="ml-auto text-[10px] font-bold tracking-wide text-current opacity-60">
                         {membership.company.prefix}
                       </span>
                     )}
@@ -132,7 +132,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
           {/* Navigation */}
           <nav className="flex-1 space-y-1 mt-2">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-stone-400 mb-3 ml-1">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground mb-3 ml-1">
               Menu Utama
             </p>
             {navigation.map((item) => {
@@ -145,11 +145,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     'flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors',
                     isActive
-                      ? 'bg-stone-100 text-stone-900 shadow-sm'
-                      : 'text-stone-600 hover:bg-stone-100/50 hover:text-stone-950'
+                      ? 'bg-card text-foreground shadow-sm'
+                      : 'text-muted-foreground hover:bg-muted/50 hover:text-foreground'
                   )}
                 >
-                  <Icon className={cn('size-4', isActive ? 'text-stone-900' : 'text-stone-400')} />
+                  <Icon className={cn('size-4', isActive ? 'text-foreground' : 'text-muted-foreground')} />
                   {item.label}
                 </Link>
               )
@@ -157,11 +157,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </nav>
 
           {/* Logout */}
-          <div className="mt-auto pt-4 border-t border-stone-100">
+          <div className="mt-auto pt-4 border-t border-border">
             <Button
               type="button"
               variant="ghost"
-              className="w-full justify-start text-stone-600 hover:text-red-700 hover:bg-red-50 gap-3"
+              className="w-full justify-start text-muted-foreground hover:text-red-700 hover:bg-red-50 gap-3"
               onClick={handleLogout}
             >
               <LogOut className="size-4" />
@@ -177,7 +177,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Mobile Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-stone-200 bg-white/95 pb-safe pt-2 backdrop-blur-md lg:hidden shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
+      <nav className="fixed bottom-0 left-0 right-0 z-50 flex items-center justify-around border-t border-border bg-card/95 pb-safe pt-2 backdrop-blur-md lg:hidden shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
         {navigation.map((item) => {
           const isActive = pathname.startsWith(item.href)
           const Icon = item.icon
@@ -187,16 +187,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               href={item.href}
               className={cn(
                 'flex flex-1 flex-col items-center gap-0.5 px-1 py-2 text-[10px] font-medium transition-all',
-                isActive ? 'text-stone-950 font-semibold' : 'text-stone-500 hover:text-stone-900'
+                isActive ? 'text-primary font-semibold' : 'text-muted-foreground hover:text-foreground'
               )}
             >
               <div
                 className={cn(
                   'flex items-center justify-center rounded-full p-1.5 transition-colors',
-                  isActive ? 'bg-stone-100' : 'bg-transparent'
+                  isActive ? 'bg-primary/10' : 'bg-transparent'
                 )}
               >
-                <Icon className={cn('size-5', isActive ? 'text-stone-950' : 'text-stone-400')} />
+                <Icon className={cn('size-5', isActive ? 'text-primary' : 'text-muted-foreground')} />
               </div>
               <span>{item.label}</span>
             </Link>
@@ -205,10 +205,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <button
           type="button"
           onClick={handleLogout}
-          className="flex flex-1 flex-col items-center gap-0.5 px-1 py-1 text-[10px] font-medium text-stone-500 hover:text-red-600 transition-all group"
+          className="flex flex-1 flex-col items-center gap-0.5 px-1 py-1 text-[10px] font-medium text-muted-foreground hover:text-red-600 transition-all group"
         >
           <div className="flex items-center justify-center rounded-full p-1.5 bg-transparent transition-colors group-hover:bg-red-50">
-            <LogOut className="size-5 text-stone-400 group-hover:text-red-600" />
+            <LogOut className="size-5 text-muted-foreground group-hover:text-red-600" />
           </div>
           <span>Keluar</span>
         </button>

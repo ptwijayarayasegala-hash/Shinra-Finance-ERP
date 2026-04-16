@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Manrope } from 'next/font/google'
 import './globals.css'
 import { cn } from '@/lib/utils'
 import { createClient } from '@/lib/supabase/server'
@@ -7,6 +7,7 @@ import { MembershipProvider } from '@/contexts/membership-context'
 import type { UserProfile, Membership } from '@/lib/types'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
+const manrope = Manrope({ subsets: ['latin'], variable: '--font-manrope' })
 
 export const metadata: Metadata = {
   title: 'Shinra Finance',
@@ -85,7 +86,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
 
   return (
-    <html lang="id" className={cn('h-full antialiased', inter.variable)}>
+    <html lang="id" className={cn('h-full antialiased', inter.variable, manrope.variable)}>
       <body className="min-h-full flex flex-col font-sans">
         <MembershipProvider user={userProfile} memberships={memberships}>
           {children}

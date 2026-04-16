@@ -31,7 +31,7 @@ export function InvoicePDFButton({
     <button
       onClick={handleDownload}
       disabled={loading}
-      className="flex items-center gap-1.5 rounded-lg border border-stone-200 px-3 py-1.5 text-xs font-medium text-stone-600 hover:border-stone-300 hover:text-stone-900 transition disabled:opacity-50"
+      className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground hover:border-border/80 hover:text-foreground transition disabled:opacity-50"
     >
       <Download className="size-3.5" />
       {loading ? 'Memuat...' : 'Export PDF'}

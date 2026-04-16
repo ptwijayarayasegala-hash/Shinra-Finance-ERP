@@ -86,29 +86,29 @@ export default async function DashboardPage() {
     <AppShell>
       <div className="space-y-6">
         {/* Header */}
-        <section className="rounded-[1.6rem] border border-black/10 bg-stone-950 p-4 text-stone-50 sm:p-6">
+        <section className="rounded-[1.6rem] border border-primary/20 bg-primary p-4 text-primary-foreground sm:p-6">
           <h1 className="text-2xl font-semibold sm:text-3xl">Dashboard</h1>
-          <p className="mt-1 text-sm text-stone-400">{format(now, 'MMMM yyyy')}</p>
+          <p className="mt-1 text-sm text-primary-foreground/60">{format(now, 'MMMM yyyy')}</p>
         </section>
 
         {/* KPI Cards */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-          <Link href="/invoices?filter=sent" className="rounded-[1.25rem] border border-stone-200 bg-white p-4 hover:border-stone-300 transition">
-            <p className="text-xs text-stone-400 mb-1">Invoice Outstanding</p>
-            <p className="text-2xl font-bold text-stone-900">{invoicesOutstandingResult.count ?? 0}</p>
-            <p className="text-xs text-stone-400 mt-1">draft + terkirim</p>
+          <Link href="/invoices?filter=sent" className="rounded-[1.25rem] border border-border bg-card p-4 hover:border-border/80 transition">
+            <p className="text-xs text-muted-foreground mb-1">Invoice Outstanding</p>
+            <p className="text-2xl font-bold text-foreground">{invoicesOutstandingResult.count ?? 0}</p>
+            <p className="text-xs text-muted-foreground mt-1">draft + terkirim</p>
           </Link>
 
-          <Link href="/invoices?filter=sent" className="rounded-[1.25rem] border border-stone-200 bg-white p-4 hover:border-stone-300 transition">
-            <p className="text-xs text-stone-400 mb-1">Total Piutang</p>
-            <p className="text-lg font-bold text-stone-900 tabular-nums">{formatRupiah(totalPiutang)}</p>
-            <p className="text-xs text-stone-400 mt-1">belum lunas</p>
+          <Link href="/invoices?filter=sent" className="rounded-[1.25rem] border border-border bg-card p-4 hover:border-border/80 transition">
+            <p className="text-xs text-muted-foreground mb-1">Total Piutang</p>
+            <p className="text-lg font-bold text-foreground tabular-nums">{formatRupiah(totalPiutang)}</p>
+            <p className="text-xs text-muted-foreground mt-1">belum lunas</p>
           </Link>
 
-          <Link href="/purchase-orders?filter=sent" className="rounded-[1.25rem] border border-stone-200 bg-white p-4 hover:border-stone-300 transition">
-            <p className="text-xs text-stone-400 mb-1">PO Outstanding</p>
-            <p className="text-2xl font-bold text-stone-900">{posOutstandingResult.count ?? 0}</p>
-            <p className="text-xs text-stone-400 mt-1">draft + terkirim</p>
+          <Link href="/purchase-orders?filter=sent" className="rounded-[1.25rem] border border-border bg-card p-4 hover:border-border/80 transition">
+            <p className="text-xs text-muted-foreground mb-1">PO Outstanding</p>
+            <p className="text-2xl font-bold text-foreground">{posOutstandingResult.count ?? 0}</p>
+            <p className="text-xs text-muted-foreground mt-1">draft + terkirim</p>
           </Link>
 
           <Link href="/cashflow" className="rounded-[1.25rem] border border-emerald-100 bg-emerald-50 p-4 hover:border-emerald-200 transition">
@@ -123,32 +123,32 @@ export default async function DashboardPage() {
             <p className="text-xs text-red-400 mt-1">bulan ini</p>
           </Link>
 
-          <div className="rounded-[1.25rem] border border-stone-200 bg-white p-4">
-            <p className="text-xs text-stone-400 mb-1">Net Cashflow</p>
-            <p className={`text-lg font-bold tabular-nums ${kasmasuk - kasKeluar >= 0 ? 'text-stone-900' : 'text-red-600'}`}>
+          <div className="rounded-[1.25rem] border border-border bg-card p-4">
+            <p className="text-xs text-muted-foreground mb-1">Net Cashflow</p>
+            <p className={`text-lg font-bold tabular-nums ${kasmasuk - kasKeluar >= 0 ? 'text-foreground' : 'text-red-600'}`}>
               {formatRupiah(kasmasuk - kasKeluar)}
             </p>
-            <p className="text-xs text-stone-400 mt-1">bulan ini</p>
+            <p className="text-xs text-muted-foreground mt-1">bulan ini</p>
           </div>
         </div>
 
         {/* Invoice terbaru */}
-        <div className="rounded-[1.25rem] border border-stone-200 bg-white p-5 space-y-3">
+        <div className="rounded-[1.25rem] border border-border bg-card p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-stone-900">Invoice Terbaru</h2>
-            <Link href="/invoices" className="text-xs text-stone-500 hover:text-stone-900">Lihat semua →</Link>
+            <h2 className="text-sm font-semibold text-foreground">Invoice Terbaru</h2>
+            <Link href="/invoices" className="text-xs text-muted-foreground hover:text-foreground">Lihat semua →</Link>
           </div>
           {recentInvoices.length === 0 ? (
-            <p className="text-sm text-stone-400">Belum ada invoice.</p>
+            <p className="text-sm text-muted-foreground">Belum ada invoice.</p>
           ) : (
             recentInvoices.map(inv => (
-              <Link key={inv.id} href={`/invoices/${inv.id}`} className="flex items-center justify-between gap-4 rounded-xl border border-stone-100 p-3 hover:border-stone-200 transition">
+              <Link key={inv.id} href={`/invoices/${inv.id}`} className="flex items-center justify-between gap-4 rounded-xl border border-border/50 p-3 hover:border-border transition">
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-semibold">{inv.invoice_number}</span>
                     <InvoiceStatusBadge status={inv.status as InvoiceStatus} />
                   </div>
-                  <p className="text-xs text-stone-500 truncate">{inv.customer_name}</p>
+                  <p className="text-xs text-muted-foreground truncate">{inv.customer_name}</p>
                 </div>
                 <p className="text-sm font-medium tabular-nums shrink-0">{formatRupiah(inv.total)}</p>
               </Link>
@@ -157,21 +157,21 @@ export default async function DashboardPage() {
         </div>
 
         {/* Transaksi cashflow terbaru */}
-        <div className="rounded-[1.25rem] border border-stone-200 bg-white p-5 space-y-3">
+        <div className="rounded-[1.25rem] border border-border bg-card p-5 space-y-3">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-stone-900">Transaksi Terbaru</h2>
-            <Link href="/cashflow" className="text-xs text-stone-500 hover:text-stone-900">Lihat semua →</Link>
+            <h2 className="text-sm font-semibold text-foreground">Transaksi Terbaru</h2>
+            <Link href="/cashflow" className="text-xs text-muted-foreground hover:text-foreground">Lihat semua →</Link>
           </div>
           {recentEntries.length === 0 ? (
-            <p className="text-sm text-stone-400">Belum ada transaksi.</p>
+            <p className="text-sm text-muted-foreground">Belum ada transaksi.</p>
           ) : (
             recentEntries.map(entry => (
-              <div key={entry.id} className="flex items-center justify-between gap-4 rounded-xl border border-stone-100 p-3">
+              <div key={entry.id} className="flex items-center justify-between gap-4 rounded-xl border border-border/50 p-3">
                 <div className="min-w-0 flex items-center gap-3">
                   <CashflowDirectionBadge direction={entry.direction as CashflowDirection} />
                   <div className="min-w-0">
-                    <p className="text-xs text-stone-700 truncate">{entry.description}</p>
-                    <p className="text-xs text-stone-400">{CASHFLOW_CATEGORY_LABELS[entry.category as CashflowCategory]} · {entry.entry_date}</p>
+                    <p className="text-xs text-foreground/80 truncate">{entry.description}</p>
+                    <p className="text-xs text-muted-foreground">{CASHFLOW_CATEGORY_LABELS[entry.category as CashflowCategory]} · {entry.entry_date}</p>
                   </div>
                 </div>
                 <p className={`text-sm font-semibold tabular-nums shrink-0 ${entry.direction === 'in' ? 'text-emerald-600' : 'text-red-500'}`}>

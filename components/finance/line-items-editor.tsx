@@ -139,12 +139,12 @@ export function LineItemsEditor({
     <div className="space-y-3">
       {/* Tax type selector */}
       <div className="space-y-1.5">
-        <label className="text-xs font-medium text-stone-600">Jenis Pajak</label>
+        <label className="text-xs font-medium text-muted-foreground">Jenis Pajak</label>
         <select
           name="tax_type"
           value={taxType}
           onChange={(e) => setTaxType(e.target.value as TaxType)}
-          className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none"
+          className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none"
         >
           {TAX_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>{opt.label}</option>
@@ -153,7 +153,7 @@ export function LineItemsEditor({
       </div>
 
       {/* Header kolom */}
-      <div className="hidden sm:grid sm:grid-cols-[24px_1fr_80px_110px_32px] gap-2 px-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-stone-400">
+      <div className="hidden sm:grid sm:grid-cols-[24px_1fr_80px_110px_32px] gap-2 px-1 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
         <span>#</span>
         <span>Deskripsi</span>
         <span className="text-right">Qty</span>
@@ -178,11 +178,11 @@ export function LineItemsEditor({
               {/* Nomor / label */}
               <div className="hidden sm:flex items-center">
                 {isSub ? (
-                  <span className="text-xs text-stone-400 flex items-center gap-0.5">
+                  <span className="text-xs text-muted-foreground flex items-center gap-0.5">
                     <CornerDownRight className="size-3" />{item.sub_label}
                   </span>
                 ) : (
-                  <span className="text-xs font-medium text-stone-500">{rowNum}</span>
+                  <span className="text-xs font-medium text-muted-foreground">{rowNum}</span>
                 )}
               </div>
 
@@ -191,7 +191,7 @@ export function LineItemsEditor({
                   <select
                     value={item.product_id}
                     onChange={(e) => updateItem(item.id, 'product_id', e.target.value)}
-                    className="w-full rounded-lg border border-stone-200 bg-stone-50 px-2.5 py-1.5 text-xs text-stone-600 focus:border-stone-400 focus:outline-none"
+                    className="w-full rounded-lg border border-border bg-muted px-2.5 py-1.5 text-xs text-muted-foreground focus:border-primary focus:outline-none"
                   >
                     <option value="">— Pilih dari katalog (opsional) —</option>
                     {products.map((p) => (
@@ -206,7 +206,7 @@ export function LineItemsEditor({
                   onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                   placeholder={isSub ? `Sub-item ${item.sub_label}` : 'Deskripsi item'}
                   required={!isSub}
-                  className={`w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-sm placeholder:text-stone-400 focus:border-stone-400 focus:outline-none ${isSub ? 'text-stone-500' : ''}`}
+                  className={`w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none ${isSub ? 'text-muted-foreground' : ''}`}
                 />
               </div>
 
@@ -218,7 +218,7 @@ export function LineItemsEditor({
                 min="0"
                 step="0.01"
                 disabled={isSub}
-                className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-sm text-right focus:border-stone-400 focus:outline-none disabled:bg-stone-50 disabled:text-stone-400"
+                className="w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-sm text-right focus:border-primary focus:outline-none disabled:bg-muted disabled:text-muted-foreground"
               />
 
               <input
@@ -229,13 +229,13 @@ export function LineItemsEditor({
                 min="0"
                 step="1"
                 disabled={isSub}
-                className="w-full rounded-lg border border-stone-200 bg-white px-2.5 py-1.5 text-sm text-right focus:border-stone-400 focus:outline-none disabled:bg-stone-50 disabled:text-stone-400"
+                className="w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-sm text-right focus:border-primary focus:outline-none disabled:bg-muted disabled:text-muted-foreground"
               />
 
               <button
                 type="button"
                 onClick={() => removeItem(item.id)}
-                className="flex h-8 w-8 items-center justify-center rounded-lg text-stone-400 transition hover:bg-red-50 hover:text-red-600"
+                className="flex h-8 w-8 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-red-50 hover:text-red-600"
               >
                 <Trash2 className="size-4" />
               </button>
@@ -246,7 +246,7 @@ export function LineItemsEditor({
               <button
                 type="button"
                 onClick={() => addSubItem(idx)}
-                className="ml-6 mt-1 flex items-center gap-1 text-[11px] text-stone-400 hover:text-stone-600 transition"
+                className="ml-6 mt-1 flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground transition"
               >
                 <CornerDownRight className="size-3" />
                 Tambah sub-item
@@ -260,7 +260,7 @@ export function LineItemsEditor({
       <button
         type="button"
         onClick={addMainItem}
-        className="flex items-center gap-1.5 rounded-lg border border-dashed border-stone-300 px-3 py-2 text-xs font-medium text-stone-500 transition hover:border-stone-400 hover:text-stone-700"
+        className="flex items-center gap-1.5 rounded-lg border border-dashed border-border px-3 py-2 text-xs font-medium text-muted-foreground transition hover:border-border/80 hover:text-foreground"
       >
         <Plus className="size-3.5" />
         Tambah item
@@ -270,30 +270,30 @@ export function LineItemsEditor({
       <input type="hidden" name="item_count" value={items.length} />
 
       {/* Summary total */}
-      <div className="rounded-[1.25rem] border border-stone-100 bg-stone-50 p-4 space-y-1.5">
-        <div className="flex justify-between text-sm text-stone-600">
+      <div className="rounded-[1.25rem] border border-border/50 bg-muted p-4 space-y-1.5">
+        <div className="flex justify-between text-sm text-muted-foreground">
           <span>Subtotal</span>
           <span className="font-medium tabular-nums">{formatRupiah(subtotal)}</span>
         </div>
         {taxType === 'ppn' && (
           <>
-            <div className="flex justify-between text-sm text-stone-500">
+            <div className="flex justify-between text-sm text-muted-foreground">
               <span>DPP (11/12)</span>
               <span className="tabular-nums">{formatRupiah(dpp)}</span>
             </div>
-            <div className="flex justify-between text-sm text-stone-500">
+            <div className="flex justify-between text-sm text-muted-foreground">
               <span>PPN 12%</span>
               <span className="tabular-nums">{formatRupiah(taxAmount)}</span>
             </div>
           </>
         )}
         {taxType === 'pph23' && (
-          <div className="flex justify-between text-sm text-stone-500">
+          <div className="flex justify-between text-sm text-muted-foreground">
             <span>PPh 23 2% (dipotong)</span>
             <span className="tabular-nums text-red-600">({formatRupiah(taxAmount)})</span>
           </div>
         )}
-        <div className="flex justify-between border-t border-stone-200 pt-2 text-sm font-semibold text-stone-900">
+        <div className="flex justify-between border-t border-border pt-2 text-sm font-semibold text-foreground">
           <span>Total</span>
           <span className="tabular-nums">{formatRupiah(total)}</span>
         </div>

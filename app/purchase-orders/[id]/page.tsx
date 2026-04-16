@@ -50,7 +50,7 @@ export default async function PODetailPage({ params, searchParams }: Props) {
   return (
     <AppShell>
       <div className="space-y-6">
-        <Link href="/purchase-orders" className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900">
+        <Link href="/purchase-orders" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground">
           <ArrowLeft className="size-4" />
           Kembali ke daftar PO
         </Link>
@@ -59,12 +59,12 @@ export default async function PODetailPage({ params, searchParams }: Props) {
           <StatusBanner message={decodeURIComponent(sp.status)} type={sp.type === 'error' ? 'error' : 'success'} />
         )}
 
-        <div className="rounded-[1.6rem] border border-black/10 bg-stone-950 p-4 text-stone-50 sm:p-6">
+        <div className="rounded-[1.6rem] border border-primary/20 bg-primary p-4 text-primary-foreground sm:p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
-              <p className="text-xs text-stone-400 mb-1">Purchase Order</p>
+              <p className="text-xs text-primary-foreground/60 mb-1">Purchase Order</p>
               <h1 className="text-xl font-bold sm:text-2xl">{po.po_number}</h1>
-              <p className="mt-1 text-sm text-stone-300">{po.vendor_name}</p>
+              <p className="mt-1 text-sm text-primary-foreground/80">{po.vendor_name}</p>
             </div>
             <div className="flex flex-col items-end gap-2">
               <POStatusBadge status={po.status as POStatus} />
@@ -102,67 +102,67 @@ export default async function PODetailPage({ params, searchParams }: Props) {
           </div>
         )}
 
-        <div className="rounded-[1.25rem] border border-stone-200 bg-white p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-stone-900">Detail PO</h2>
+        <div className="rounded-[1.25rem] border border-border bg-card p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-foreground">Detail PO</h2>
           {isEditable ? (
             <form action={updatePOMetaAction} className="space-y-4">
               <input type="hidden" name="po_id" value={po.id} />
               <div className="grid gap-4 sm:grid-cols-2">
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">Vendor</label>
-                  <select name="vendor_id" defaultValue={po.vendor_id ?? ''} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none">
+                  <label className="text-xs font-medium text-muted-foreground">Vendor</label>
+                  <select name="vendor_id" defaultValue={po.vendor_id ?? ''} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none">
                     <option value="">— Tidak ada —</option>
                     {vendors.map(v => <option key={v.id} value={v.id}>{v.name}</option>)}
                   </select>
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">Nama di PO *</label>
-                  <input type="text" name="vendor_name" defaultValue={po.vendor_name} required className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">Nama di PO *</label>
+                  <input type="text" name="vendor_name" defaultValue={po.vendor_name} required className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">NPWP Vendor</label>
-                  <input type="text" name="vendor_npwp" defaultValue={po.vendor_npwp ?? ''} placeholder="contoh: 1000 0000 0544 2781" className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">NPWP Vendor</label>
+                  <input type="text" name="vendor_npwp" defaultValue={po.vendor_npwp ?? ''} placeholder="contoh: 1000 0000 0544 2781" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">Tanggal PO</label>
-                  <input type="date" name="po_date" defaultValue={po.po_date} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">Tanggal PO</label>
+                  <input type="date" name="po_date" defaultValue={po.po_date} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">Estimasi Terima</label>
-                  <input type="date" name="expected_date" defaultValue={po.expected_date ?? ''} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">Estimasi Terima</label>
+                  <input type="date" name="expected_date" defaultValue={po.expected_date ?? ''} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-xs font-medium text-stone-600">Ref. Invoice</label>
-                  <input type="text" name="ref_invoice" defaultValue={po.ref_invoice ?? ''} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                  <label className="text-xs font-medium text-muted-foreground">Ref. Invoice</label>
+                  <input type="text" name="ref_invoice" defaultValue={po.ref_invoice ?? ''} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
                 </div>
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Alamat Vendor</label>
-                <textarea name="vendor_address" rows={2} defaultValue={po.vendor_address ?? ''} placeholder="Jl. Contoh No. 1, Salatiga, Jawa Tengah" className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none resize-none" />
+                <label className="text-xs font-medium text-muted-foreground">Alamat Vendor</label>
+                <textarea name="vendor_address" rows={2} defaultValue={po.vendor_address ?? ''} placeholder="Jl. Contoh No. 1, Salatiga, Jawa Tengah" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none resize-none" />
               </div>
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Catatan</label>
-                <textarea name="notes" rows={2} defaultValue={po.notes ?? ''} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none resize-none" />
+                <label className="text-xs font-medium text-muted-foreground">Catatan</label>
+                <textarea name="notes" rows={2} defaultValue={po.notes ?? ''} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none resize-none" />
               </div>
-              <SubmitButton className="rounded-lg bg-stone-950 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800">
+              <SubmitButton className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Simpan Perubahan
               </SubmitButton>
             </form>
           ) : (
             <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-3">
-              <div><dt className="text-xs text-stone-400">Vendor</dt><dd className="font-medium">{po.vendor_name}</dd></div>
-              {po.vendor_npwp && <div><dt className="text-xs text-stone-400">NPWP Vendor</dt><dd>{po.vendor_npwp}</dd></div>}
-              <div><dt className="text-xs text-stone-400">Tanggal PO</dt><dd>{po.po_date}</dd></div>
-              {po.expected_date && <div><dt className="text-xs text-stone-400">Est. Terima</dt><dd>{po.expected_date}</dd></div>}
-              {po.ref_invoice && <div><dt className="text-xs text-stone-400">Ref. Invoice</dt><dd>{po.ref_invoice}</dd></div>}
-              {po.vendor_address && <div className="col-span-2 sm:col-span-3"><dt className="text-xs text-stone-400">Alamat Vendor</dt><dd>{po.vendor_address}</dd></div>}
-              {po.notes && <div className="col-span-2 sm:col-span-3"><dt className="text-xs text-stone-400">Catatan</dt><dd>{po.notes}</dd></div>}
+              <div><dt className="text-xs text-muted-foreground">Vendor</dt><dd className="font-medium">{po.vendor_name}</dd></div>
+              {po.vendor_npwp && <div><dt className="text-xs text-muted-foreground">NPWP Vendor</dt><dd>{po.vendor_npwp}</dd></div>}
+              <div><dt className="text-xs text-muted-foreground">Tanggal PO</dt><dd>{po.po_date}</dd></div>
+              {po.expected_date && <div><dt className="text-xs text-muted-foreground">Est. Terima</dt><dd>{po.expected_date}</dd></div>}
+              {po.ref_invoice && <div><dt className="text-xs text-muted-foreground">Ref. Invoice</dt><dd>{po.ref_invoice}</dd></div>}
+              {po.vendor_address && <div className="col-span-2 sm:col-span-3"><dt className="text-xs text-muted-foreground">Alamat Vendor</dt><dd>{po.vendor_address}</dd></div>}
+              {po.notes && <div className="col-span-2 sm:col-span-3"><dt className="text-xs text-muted-foreground">Catatan</dt><dd>{po.notes}</dd></div>}
             </dl>
           )}
         </div>
 
-        <div className="rounded-[1.25rem] border border-stone-200 bg-white p-5 space-y-4">
-          <h2 className="text-sm font-semibold text-stone-900">Item</h2>
+        <div className="rounded-[1.25rem] border border-border bg-card p-5 space-y-4">
+          <h2 className="text-sm font-semibold text-foreground">Item</h2>
           {isEditable ? (
             <form action={upsertPOItemsAction} className="space-y-4">
               <input type="hidden" name="po_id" value={po.id} />
@@ -179,38 +179,38 @@ export default async function PODetailPage({ params, searchParams }: Props) {
                 products={products.map(p => ({ id: p.id, name: p.name, price: p.price }))}
                 taxType={(po.tax_type ?? 'none') as TaxType}
               />
-              <SubmitButton className="rounded-lg bg-stone-950 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800">
+              <SubmitButton className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                 Simpan Item
               </SubmitButton>
             </form>
           ) : (
             <div className="space-y-3">
               {items.map(item => (
-                <div key={item.id} className={`flex justify-between gap-4 text-sm ${item.item_type === 'sub' ? 'pl-5 text-stone-500' : ''}`}>
+                <div key={item.id} className={`flex justify-between gap-4 text-sm ${item.item_type === 'sub' ? 'pl-5 text-muted-foreground' : ''}`}>
                   <div>
-                    <p className={item.item_type === 'sub' ? 'text-stone-500' : 'font-medium'}>
-                      {item.item_type === 'sub' && <span className="mr-1 text-xs text-stone-400">{item.sub_label}.</span>}
+                    <p className={item.item_type === 'sub' ? 'text-muted-foreground' : 'font-medium'}>
+                      {item.item_type === 'sub' && <span className="mr-1 text-xs text-muted-foreground">{item.sub_label}.</span>}
                       {item.description}
                     </p>
                     {item.item_type === 'main' && (
-                      <p className="text-xs text-stone-400">{item.quantity} × {formatRupiah(item.unit_price)}</p>
+                      <p className="text-xs text-muted-foreground">{item.quantity} × {formatRupiah(item.unit_price)}</p>
                     )}
                   </div>
                   <p className="font-medium tabular-nums shrink-0">{item.item_type === 'sub' ? '-' : formatRupiah(item.line_total)}</p>
                 </div>
               ))}
-              <div className="border-t border-stone-100 pt-3 space-y-1">
-                <div className="flex justify-between text-sm text-stone-600"><span>Subtotal</span><span className="tabular-nums">{formatRupiah(po.subtotal)}</span></div>
+              <div className="border-t border-border/50 pt-3 space-y-1">
+                <div className="flex justify-between text-sm text-muted-foreground"><span>Subtotal</span><span className="tabular-nums">{formatRupiah(po.subtotal)}</span></div>
                 {po.tax_type === 'ppn' && (
                   <>
-                    <div className="flex justify-between text-sm text-stone-500"><span>DPP (11/12)</span><span className="tabular-nums">{formatRupiah(po.dpp)}</span></div>
-                    <div className="flex justify-between text-sm text-stone-500"><span>PPN 12%</span><span className="tabular-nums">{formatRupiah(po.tax_amount)}</span></div>
+                    <div className="flex justify-between text-sm text-muted-foreground"><span>DPP (11/12)</span><span className="tabular-nums">{formatRupiah(po.dpp)}</span></div>
+                    <div className="flex justify-between text-sm text-muted-foreground"><span>PPN 12%</span><span className="tabular-nums">{formatRupiah(po.tax_amount)}</span></div>
                   </>
                 )}
                 {po.tax_type === 'pph23' && (
-                  <div className="flex justify-between text-sm text-stone-500"><span>PPh 23 2%</span><span className="tabular-nums text-red-600">({formatRupiah(po.tax_amount)})</span></div>
+                  <div className="flex justify-between text-sm text-muted-foreground"><span>PPh 23 2%</span><span className="tabular-nums text-red-600">({formatRupiah(po.tax_amount)})</span></div>
                 )}
-                <div className="flex justify-between font-semibold text-stone-900 pt-1"><span>Total</span><span className="tabular-nums">{formatRupiah(po.total)}</span></div>
+                <div className="flex justify-between font-semibold text-foreground pt-1"><span>Total</span><span className="tabular-nums">{formatRupiah(po.total)}</span></div>
               </div>
             </div>
           )}

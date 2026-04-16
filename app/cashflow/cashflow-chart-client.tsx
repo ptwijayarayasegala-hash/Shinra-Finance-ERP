@@ -12,7 +12,7 @@ interface MonthSummary {
 
 export function CashflowChart({ data }: { data: MonthSummary[] }) {
   if (data.length === 0) return (
-    <div className="flex h-48 items-center justify-center text-sm text-stone-400">
+    <div className="flex h-48 items-center justify-center text-sm text-muted-foreground">
       Belum ada data cashflow.
     </div>
   )

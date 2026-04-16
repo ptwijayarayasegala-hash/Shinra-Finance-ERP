@@ -54,7 +54,7 @@ export const INVOICE_STATUS_LABELS: Record<InvoiceStatus, string> = {
 }
 
 export const INVOICE_STATUS_COLORS: Record<InvoiceStatus, string> = {
-  draft: 'bg-stone-100 text-stone-600 border-stone-200',
+  draft: 'bg-muted text-muted-foreground border-border',
   sent: 'bg-blue-50 text-blue-700 border-blue-200',
   paid: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   cancelled: 'bg-red-50 text-red-700 border-red-200',
@@ -113,7 +113,7 @@ export const PO_STATUS_LABELS: Record<POStatus, string> = {
 }
 
 export const PO_STATUS_COLORS: Record<POStatus, string> = {
-  draft: 'bg-stone-100 text-stone-600 border-stone-200',
+  draft: 'bg-muted text-muted-foreground border-border',
   sent: 'bg-blue-50 text-blue-700 border-blue-200',
   received: 'bg-emerald-50 text-emerald-700 border-emerald-200',
   cancelled: 'bg-red-50 text-red-700 border-red-200',

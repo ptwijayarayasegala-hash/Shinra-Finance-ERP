@@ -60,15 +60,15 @@ export default async function InvoicesPage({ searchParams }: { searchParams: Sea
     <AppShell>
       <div className="space-y-6">
         {/* Header */}
-        <section className="rounded-[1.6rem] border border-black/10 bg-stone-950 p-4 text-stone-50 sm:p-6">
+        <section className="rounded-[1.6rem] border border-primary/20 bg-primary p-4 text-primary-foreground sm:p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
               <h1 className="text-2xl font-semibold sm:text-3xl">Invoice</h1>
-              <p className="mt-1 text-sm text-stone-400">
+              <p className="mt-1 text-sm text-primary-foreground/60">
                 {invoices?.length ?? 0} invoice ditemukan
               </p>
             </div>
-            <FileText className="size-8 text-stone-600 shrink-0" />
+            <FileText className="size-8 text-primary-foreground/50 shrink-0" />
           </div>
         </section>
 
@@ -88,8 +88,8 @@ export default async function InvoicesPage({ searchParams }: { searchParams: Sea
               href={`/invoices?filter=${f.value}`}
               className={`shrink-0 rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors ${
                 filterStatus === f.value
-                  ? 'border-stone-950 bg-stone-950 text-white'
-                  : 'border-stone-200 bg-white text-stone-600 hover:border-stone-300'
+                  ? 'border-primary bg-primary text-primary-foreground'
+                  : 'border-border bg-card text-muted-foreground hover:border-border/80'
               }`}
             >
               {f.label}
@@ -98,16 +98,16 @@ export default async function InvoicesPage({ searchParams }: { searchParams: Sea
         </div>
 
         {/* Form buat invoice baru */}
-        <details className="group rounded-[1.25rem] border border-stone-200 bg-white">
-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm font-semibold text-stone-700 select-none">
+        <details className="group rounded-[1.25rem] border border-border bg-card">
+          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm font-semibold text-foreground select-none">
             <Plus className="size-4" />
             Buat Invoice Baru
           </summary>
-          <form action={createInvoiceAction} className="border-t border-stone-100 px-5 pb-5 pt-4 space-y-4">
+          <form action={createInvoiceAction} className="border-t border-border/50 px-5 pb-5 pt-4 space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Company *</label>
-                <select name="company_id" required className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none">
+                <label className="text-xs font-medium text-muted-foreground">Company *</label>
+                <select name="company_id" required className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none">
                   <option value="">— Pilih company —</option>
                   {companies.map(c => (
                     <option key={c.id} value={c.id}>{c.name}</option>
@@ -116,8 +116,8 @@ export default async function InvoicesPage({ searchParams }: { searchParams: Sea
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Customer *</label>
-                <select name="customer_id" className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none">
+                <label className="text-xs font-medium text-muted-foreground">Customer *</label>
+                <select name="customer_id" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none">
                   <option value="">— Pilih dari daftar (opsional) —</option>
                   {customers?.map(c => (
                     <option key={c.id} value={c.id}>{c.name}</option>
@@ -126,27 +126,27 @@ export default async function InvoicesPage({ searchParams }: { searchParams: Sea
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Nama Customer *</label>
-                <input type="text" name="customer_name" required placeholder="Nama customer di invoice" className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm placeholder:text-stone-400 focus:border-stone-400 focus:outline-none" />
+                <label className="text-xs font-medium text-muted-foreground">Nama Customer *</label>
+                <input type="text" name="customer_name" required placeholder="Nama customer di invoice" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none" />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Tanggal Invoice</label>
-                <input type="date" name="invoice_date" defaultValue={new Date().toISOString().split('T')[0]} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                <label className="text-xs font-medium text-muted-foreground">Tanggal Invoice</label>
+                <input type="date" name="invoice_date" defaultValue={new Date().toISOString().split('T')[0]} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Jatuh Tempo</label>
-                <input type="date" name="due_date" className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                <label className="text-xs font-medium text-muted-foreground">Jatuh Tempo</label>
+                <input type="date" name="due_date" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
               </div>
             </div>
 
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-stone-600">Catatan</label>
-              <textarea name="notes" rows={2} placeholder="Catatan opsional..." className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm placeholder:text-stone-400 focus:border-stone-400 focus:outline-none resize-none" />
+              <label className="text-xs font-medium text-muted-foreground">Catatan</label>
+              <textarea name="notes" rows={2} placeholder="Catatan opsional..." className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none resize-none" />
             </div>
 
-            <SubmitButton className="rounded-lg bg-stone-950 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800">
+            <SubmitButton className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
               Buat Invoice
             </SubmitButton>
           </form>
@@ -155,7 +155,7 @@ export default async function InvoicesPage({ searchParams }: { searchParams: Sea
         {/* Daftar invoice */}
         <div className="space-y-2">
           {(invoices ?? []).length === 0 ? (
-            <div className="rounded-[1.25rem] border border-dashed border-stone-200 p-8 text-center text-sm text-stone-400">
+            <div className="rounded-[1.25rem] border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
               Belum ada invoice.
             </div>
           ) : (
@@ -163,20 +163,20 @@ export default async function InvoicesPage({ searchParams }: { searchParams: Sea
               <Link
                 key={invoice.id}
                 href={`/invoices/${invoice.id}`}
-                className="flex items-center justify-between gap-4 rounded-[1.25rem] border border-stone-200 bg-white p-4 transition hover:border-stone-300 hover:shadow-sm"
+                className="flex items-center justify-between gap-4 rounded-[1.25rem] border border-border bg-card p-4 transition hover:border-border/80 hover:shadow-sm"
               >
                 <div className="min-w-0">
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-stone-900">{invoice.invoice_number}</span>
+                    <span className="text-sm font-semibold text-foreground">{invoice.invoice_number}</span>
                     <InvoiceStatusBadge status={invoice.status as InvoiceStatus} />
                   </div>
-                  <p className="mt-0.5 text-xs text-stone-500 truncate">{invoice.customer_name}</p>
-                  <p className="text-xs text-stone-400">{invoice.invoice_date}</p>
+                  <p className="mt-0.5 text-xs text-muted-foreground truncate">{invoice.customer_name}</p>
+                  <p className="text-xs text-muted-foreground">{invoice.invoice_date}</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <p className="text-sm font-semibold tabular-nums text-stone-900">{formatRupiah(invoice.total)}</p>
+                  <p className="text-sm font-semibold tabular-nums text-foreground">{formatRupiah(invoice.total)}</p>
                   {invoice.due_date && (
-                    <p className="text-xs text-stone-400">Jatuh tempo: {invoice.due_date}</p>
+                    <p className="text-xs text-muted-foreground">Jatuh tempo: {invoice.due_date}</p>
                   )}
                 </div>
               </Link>

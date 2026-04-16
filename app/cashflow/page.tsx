@@ -68,13 +68,13 @@ export default async function CashflowPage({ searchParams }: { searchParams: Sea
   return (
     <AppShell>
       <div className="space-y-6">
-        <section className="rounded-[1.6rem] border border-black/10 bg-stone-950 p-4 text-stone-50 sm:p-6">
+        <section className="rounded-[1.6rem] border border-primary/20 bg-primary p-4 text-primary-foreground sm:p-6">
           <div className="flex items-start justify-between gap-4">
             <div>
               <h1 className="text-2xl font-semibold sm:text-3xl">Cashflow</h1>
-              <p className="mt-1 text-sm text-stone-400">{allEntries.length} transaksi tercatat</p>
+              <p className="mt-1 text-sm text-primary-foreground/60">{allEntries.length} transaksi tercatat</p>
             </div>
-            <TrendingUp className="size-8 text-stone-600 shrink-0" />
+            <TrendingUp className="size-8 text-primary-foreground/50 shrink-0" />
           </div>
         </section>
 
@@ -84,49 +84,49 @@ export default async function CashflowPage({ searchParams }: { searchParams: Sea
 
         {/* KPI Bulan ini */}
         <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-[1.25rem] border border-stone-200 bg-white p-4">
-            <p className="text-xs text-stone-400 mb-1">Masuk</p>
+          <div className="rounded-[1.25rem] border border-border bg-card p-4">
+            <p className="text-xs text-muted-foreground mb-1">Masuk</p>
             <p className="text-lg font-bold text-emerald-600 tabular-nums">{formatRupiah(thisMonth.in)}</p>
-            <p className="text-xs text-stone-400 mt-0.5">bulan ini</p>
+            <p className="text-xs text-muted-foreground mt-0.5">bulan ini</p>
           </div>
-          <div className="rounded-[1.25rem] border border-stone-200 bg-white p-4">
-            <p className="text-xs text-stone-400 mb-1">Keluar</p>
+          <div className="rounded-[1.25rem] border border-border bg-card p-4">
+            <p className="text-xs text-muted-foreground mb-1">Keluar</p>
             <p className="text-lg font-bold text-red-500 tabular-nums">{formatRupiah(thisMonth.out)}</p>
-            <p className="text-xs text-stone-400 mt-0.5">bulan ini</p>
+            <p className="text-xs text-muted-foreground mt-0.5">bulan ini</p>
           </div>
-          <div className="rounded-[1.25rem] border border-stone-200 bg-white p-4">
-            <p className="text-xs text-stone-400 mb-1">Net</p>
-            <p className={`text-lg font-bold tabular-nums ${thisMonth.in - thisMonth.out >= 0 ? 'text-stone-900' : 'text-red-600'}`}>
+          <div className="rounded-[1.25rem] border border-border bg-card p-4">
+            <p className="text-xs text-muted-foreground mb-1">Net</p>
+            <p className={`text-lg font-bold tabular-nums ${thisMonth.in - thisMonth.out >= 0 ? 'text-foreground' : 'text-red-600'}`}>
               {formatRupiah(thisMonth.in - thisMonth.out)}
             </p>
-            <p className="text-xs text-stone-400 mt-0.5">bulan ini</p>
+            <p className="text-xs text-muted-foreground mt-0.5">bulan ini</p>
           </div>
         </div>
 
         {/* Chart */}
-        <div className="rounded-[1.25rem] border border-stone-200 bg-white p-5">
-          <h2 className="text-sm font-semibold text-stone-900 mb-4">12 Bulan Terakhir</h2>
+        <div className="rounded-[1.25rem] border border-border bg-card p-5">
+          <h2 className="text-sm font-semibold text-foreground mb-4">12 Bulan Terakhir</h2>
           <CashflowChart data={chartData} />
         </div>
 
         {/* Form entry manual */}
-        <details className="group rounded-[1.25rem] border border-stone-200 bg-white">
-          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm font-semibold text-stone-700 select-none">
+        <details className="group rounded-[1.25rem] border border-border bg-card">
+          <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm font-semibold text-foreground select-none">
             <Plus className="size-4" />
             Tambah Entry Manual
           </summary>
-          <form action={createManualEntryAction} className="border-t border-stone-100 px-5 pb-5 pt-4 space-y-4">
+          <form action={createManualEntryAction} className="border-t border-border/50 px-5 pb-5 pt-4 space-y-4">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Company *</label>
-                <select name="company_id" required className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none">
+                <label className="text-xs font-medium text-muted-foreground">Company *</label>
+                <select name="company_id" required className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none">
                   <option value="">— Pilih company —</option>
                   {companies.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Arah *</label>
+                <label className="text-xs font-medium text-muted-foreground">Arah *</label>
                 <div className="flex gap-3">
                   {(['in', 'out'] as const).map(d => (
                     <label key={d} className="flex items-center gap-2 cursor-pointer">
@@ -138,8 +138,8 @@ export default async function CashflowPage({ searchParams }: { searchParams: Sea
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Kategori *</label>
-                <select name="category" required className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none">
+                <label className="text-xs font-medium text-muted-foreground">Kategori *</label>
+                <select name="category" required className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none">
                   {MANUAL_CASHFLOW_CATEGORIES.map(cat => (
                     <option key={cat} value={cat}>{CASHFLOW_CATEGORY_LABELS[cat]}</option>
                   ))}
@@ -147,22 +147,22 @@ export default async function CashflowPage({ searchParams }: { searchParams: Sea
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Jumlah (IDR) *</label>
-                <input type="number" name="amount" min="1" step="1" required placeholder="0" className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                <label className="text-xs font-medium text-muted-foreground">Jumlah (IDR) *</label>
+                <input type="number" name="amount" min="1" step="1" required placeholder="0" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
               </div>
 
               <div className="space-y-1.5">
-                <label className="text-xs font-medium text-stone-600">Tanggal *</label>
-                <input type="date" name="entry_date" defaultValue={new Date().toISOString().split('T')[0]} className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm focus:border-stone-400 focus:outline-none" />
+                <label className="text-xs font-medium text-muted-foreground">Tanggal *</label>
+                <input type="date" name="entry_date" defaultValue={new Date().toISOString().split('T')[0]} className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none" />
               </div>
 
               <div className="space-y-1.5 sm:col-span-2">
-                <label className="text-xs font-medium text-stone-600">Deskripsi *</label>
-                <input type="text" name="description" required placeholder="Contoh: Gaji tim April 2026" className="w-full rounded-lg border border-stone-200 bg-white px-3 py-2 text-sm placeholder:text-stone-400 focus:border-stone-400 focus:outline-none" />
+                <label className="text-xs font-medium text-muted-foreground">Deskripsi *</label>
+                <input type="text" name="description" required placeholder="Contoh: Gaji tim April 2026" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none" />
               </div>
             </div>
 
-            <SubmitButton className="rounded-lg bg-stone-950 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800">
+            <SubmitButton className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
               Tambah Entry
             </SubmitButton>
           </form>
@@ -170,22 +170,22 @@ export default async function CashflowPage({ searchParams }: { searchParams: Sea
 
         {/* Daftar entries */}
         <div className="space-y-2">
-          <h2 className="text-sm font-semibold text-stone-700">Semua Transaksi</h2>
+          <h2 className="text-sm font-semibold text-foreground">Semua Transaksi</h2>
           {allEntries.length === 0 ? (
-            <div className="rounded-[1.25rem] border border-dashed border-stone-200 p-8 text-center text-sm text-stone-400">
+            <div className="rounded-[1.25rem] border border-dashed border-border p-8 text-center text-sm text-muted-foreground">
               Belum ada transaksi cashflow.
             </div>
           ) : (
             allEntries.map(entry => (
-              <div key={entry.id} className="flex items-center justify-between gap-4 rounded-[1.25rem] border border-stone-200 bg-white p-4">
+              <div key={entry.id} className="flex items-center justify-between gap-4 rounded-[1.25rem] border border-border bg-card p-4">
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap mb-0.5">
                     <CashflowDirectionBadge direction={entry.direction as CashflowDirection} />
-                    <span className="text-xs text-stone-400">{CASHFLOW_CATEGORY_LABELS[entry.category as CashflowCategory]}</span>
-                    {entry.is_auto && <span className="text-[10px] text-stone-400 border border-stone-200 rounded px-1.5 py-0.5">Auto</span>}
+                    <span className="text-xs text-muted-foreground">{CASHFLOW_CATEGORY_LABELS[entry.category as CashflowCategory]}</span>
+                    {entry.is_auto && <span className="text-[10px] text-muted-foreground border border-border rounded px-1.5 py-0.5">Auto</span>}
                   </div>
-                  <p className="text-sm text-stone-700 truncate">{entry.description}</p>
-                  <p className="text-xs text-stone-400">{entry.entry_date}</p>
+                  <p className="text-sm text-foreground truncate">{entry.description}</p>
+                  <p className="text-xs text-muted-foreground">{entry.entry_date}</p>
                 </div>
                 <div className="text-right shrink-0 flex items-center gap-3">
                   <p className={`text-sm font-semibold tabular-nums ${entry.direction === 'in' ? 'text-emerald-600' : 'text-red-500'}`}>
@@ -194,7 +194,7 @@ export default async function CashflowPage({ searchParams }: { searchParams: Sea
                   {!entry.is_auto && (
                     <form action={deleteManualEntryAction}>
                       <input type="hidden" name="entry_id" value={entry.id} />
-                      <SubmitButton className="text-xs text-stone-400 hover:text-red-600 transition-colors" pendingText="...">
+                      <SubmitButton className="text-xs text-muted-foreground hover:text-red-600 transition-colors" pendingText="...">
                         Hapus
                       </SubmitButton>
                     </form>
