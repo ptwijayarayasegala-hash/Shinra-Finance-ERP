@@ -7,6 +7,7 @@ import {
   FileText,
   LayoutDashboard,
   LogOut,
+  Mail,
   Paperclip,
   ShoppingCart,
   TrendingUp,
@@ -22,6 +23,7 @@ const navigation = [
   { href: '/purchase-orders', label: 'Purchase Order', icon: ShoppingCart },
   { href: '/cashflow', label: 'Cashflow', icon: TrendingUp },
   { href: '/documents', label: 'Dokumen', icon: Paperclip },
+  { href: '/letters', label: 'Surat', icon: Mail },
 ]
 
 export function AppShell({ children }: { children: React.ReactNode }) {

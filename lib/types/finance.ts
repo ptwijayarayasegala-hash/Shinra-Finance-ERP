@@ -187,3 +187,44 @@ export const DOCUMENT_TYPE_LABELS: Record<DocumentType, string> = {
   receipt: 'Kwitansi / Nota',
   other: 'Lainnya',
 }
+
+// ─── Letters ──────────────────────────────────────────────────────────────────
+
+export type LetterDirection = 'masuk' | 'keluar'
+export type LetterCategory = 'A' | 'B' | 'C'
+
+export interface LetterRecord {
+  id: string
+  company_id: string
+  direction: LetterDirection
+  category: LetterCategory | null
+  recipient_code: string | null
+  letter_type: string
+  letter_number: string
+  letter_date: string
+  letter_month: number | null
+  letter_year: number | null
+  recipient_or_sender: string
+  perihal: string
+  notes: string | null
+  created_by: string
+  created_at: string
+  updated_at: string
+}
+
+export const LETTER_CATEGORY_LABELS: Record<LetterCategory, string> = {
+  A: 'Internal',
+  B: 'Antar Divisi',
+  C: 'Luar',
+}
+
+export const LETTER_TYPE_OPTIONS: { code: string; label: string }[] = [
+  { code: 'QUO', label: 'Penawaran (QUO)' },
+  { code: 'SKT', label: 'Surat Keterangan (SKT)' },
+  { code: 'KTR', label: 'Kontrak (KTR)' },
+  { code: 'SPK', label: 'Surat Perintah Kerja (SPK)' },
+  { code: 'SPH', label: 'Surat Permintaan Harga (SPH)' },
+  { code: 'UND', label: 'Undangan (UND)' },
+  { code: 'PBT', label: 'Pemberitahuan (PBT)' },
+  { code: 'MEM', label: 'Memo (MEM)' },
+]
