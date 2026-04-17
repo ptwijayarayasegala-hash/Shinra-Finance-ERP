@@ -206,6 +206,7 @@ export interface LetterRecord {
   letter_year: number | null
   recipient_or_sender: string
   perihal: string
+  drive_link: string | null
   notes: string | null
   created_by: string
   created_at: string

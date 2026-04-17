@@ -5,9 +5,9 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { getAccessContext, validateCompanyAccess } from '@/lib/access'
 
-function finish(message: string, type: 'success' | 'error' = 'success') {
+function finish(message: string, type: 'success' | 'error' = 'success', extra = '') {
   revalidatePath('/letters')
-  redirect(`/letters?status=${encodeURIComponent(message)}&type=${type}`)
+  redirect(`/letters${extra}?status=${encodeURIComponent(message)}&type=${type}`)
 }
 
 export async function createLetterAction(formData: FormData) {
@@ -38,6 +38,8 @@ export async function createLetterAction(formData: FormData) {
   const letterDate = new Date(letterDateStr)
   const letterMonth = letterDate.getMonth() + 1
   const letterYear = letterDate.getFullYear()
+
+  const driveLink = formData.get('drive_link')?.toString().trim() || null
 
   let letterNumber: string
 
@@ -74,6 +76,7 @@ export async function createLetterAction(formData: FormData) {
       letter_year: letterYear,
       recipient_or_sender: recipientOrSender,
       perihal,
+      drive_link: driveLink,
       notes: formData.get('notes')?.toString().trim() || null,
       created_by: user.id,
     })
@@ -94,6 +97,7 @@ export async function createLetterAction(formData: FormData) {
       letter_year: letterYear,
       recipient_or_sender: recipientOrSender,
       perihal,
+      drive_link: driveLink,
       notes: formData.get('notes')?.toString().trim() || null,
       created_by: user.id,
     })
@@ -101,6 +105,35 @@ export async function createLetterAction(formData: FormData) {
   }
 
   finish(`Surat ${direction} berhasil dicatat: ${letterNumber}`)
+}
+
+export async function updateLetterAction(formData: FormData) {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  const id = formData.get('id')?.toString()
+  if (!id) finish('ID surat tidak ditemukan.', 'error')
+
+  const perihal = formData.get('perihal')?.toString().trim()
+  if (!perihal) finish('Perihal wajib diisi.', 'error')
+
+  const recipientOrSender = formData.get('recipient_or_sender')?.toString().trim()
+  if (!recipientOrSender) finish('Nama penerima/pengirim wajib diisi.', 'error')
+
+  const driveLink = formData.get('drive_link')?.toString().trim() || null
+  const notes = formData.get('notes')?.toString().trim() || null
+  const letterDate = formData.get('letter_date')?.toString()
+
+  const { error } = await supabase
+    .schema('finance')
+    .from('letters')
+    .update({ perihal, recipient_or_sender: recipientOrSender, drive_link: driveLink, notes, letter_date: letterDate })
+    .eq('id', id!)
+
+  if (error) finish(`Gagal menyimpan perubahan: ${error.message}`, 'error')
+
+  finish('Surat berhasil diupdate.')
 }
 
 export async function deleteLetterAction(formData: FormData) {

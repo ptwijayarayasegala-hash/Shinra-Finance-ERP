@@ -4,18 +4,33 @@ import { getAccessContext, getAllowedCompanyOptions } from '@/lib/access'
 import { AppShell } from '@/components/app-shell'
 import { StatusBanner } from '@/components/status-banner'
 import { SubmitButton } from '@/components/submit-button'
-import { createLetterAction, deleteLetterAction } from './actions'
+import { createLetterAction, updateLetterAction, deleteLetterAction } from './actions'
 import Link from 'next/link'
-import { Mail, Plus, Trash2 } from 'lucide-react'
+import { ExternalLink, Mail, Pencil, Plus, Trash2, X } from 'lucide-react'
 import type { LetterRecord, LetterDirection, LetterCategory } from '@/lib/types/finance'
 import { LETTER_CATEGORY_LABELS, LETTER_TYPE_OPTIONS } from '@/lib/types/finance'
 
-type SearchParams = Promise<{ dir?: string; year?: string; status?: string; type?: string }>
+type SearchParams = Promise<{ dir?: string; year?: string; status?: string; type?: string; edit?: string }>
 
 const CATEGORY_COLORS: Record<LetterCategory, string> = {
   A: 'bg-blue-50 text-blue-700 border-blue-200',
   B: 'bg-violet-50 text-violet-700 border-violet-200',
   C: 'bg-amber-50 text-amber-700 border-amber-200',
+}
+
+function DriveInput({ defaultValue }: { defaultValue?: string | null }) {
+  return (
+    <div className="space-y-1.5 sm:col-span-2">
+      <label className="text-xs font-medium text-muted-foreground">Link Google Drive (opsional)</label>
+      <input
+        type="url"
+        name="drive_link"
+        defaultValue={defaultValue ?? ''}
+        placeholder="https://drive.google.com/..."
+        className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none"
+      />
+    </div>
+  )
 }
 
 export default async function LettersPage({ searchParams }: { searchParams: SearchParams }) {
@@ -29,6 +44,7 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
   const filterDir = (params.dir ?? 'all') as LetterDirection | 'all'
   const currentYear = new Date().getFullYear()
   const filterYear = params.year ? parseInt(params.year) : currentYear
+  const editId = params.edit ?? null
 
   let query = supabase
     .schema('finance')
@@ -48,8 +64,11 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
   const { data: letters } = await query
 
   const companyMap = Object.fromEntries(companies.map(c => [c.id, c]))
-
   const yearOptions = Array.from({ length: 3 }, (_, i) => currentYear - i)
+
+  const editLetter = editId ? (letters ?? []).find((l: LetterRecord) => l.id === editId) ?? null : null
+
+  const baseHref = `/letters?dir=${filterDir}&year=${filterYear}`
 
   return (
     <AppShell>
@@ -74,7 +93,7 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
           />
         )}
 
-        {/* Filter — arah + tahun */}
+        {/* Filter */}
         <div className="flex flex-wrap gap-2">
           {(['all', 'keluar', 'masuk'] as const).map((d) => (
             <Link
@@ -106,6 +125,73 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
           </div>
         </div>
 
+        {/* Edit form — muncul kalau ?edit=<id> */}
+        {editLetter && (
+          <div className="rounded-[1.25rem] border border-primary/30 bg-card shadow-sm">
+            <div className="flex items-center justify-between px-5 py-4 border-b border-border/50">
+              <div>
+                <p className="text-sm font-semibold text-foreground">Edit Surat</p>
+                <p className="text-xs text-muted-foreground font-mono">{editLetter.letter_number}</p>
+              </div>
+              <Link
+                href={baseHref}
+                className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted transition-colors"
+              >
+                <X className="size-4" />
+              </Link>
+            </div>
+            <form action={updateLetterAction} className="px-5 pb-5 pt-4 space-y-4">
+              <input type="hidden" name="id" value={editLetter.id} />
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-1.5 sm:col-span-2">
+                  <label className="text-xs font-medium text-muted-foreground">Perihal *</label>
+                  <input
+                    type="text"
+                    name="perihal"
+                    required
+                    defaultValue={editLetter.perihal}
+                    className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                  />
+                </div>
+                <div className="space-y-1.5 sm:col-span-2">
+                  <label className="text-xs font-medium text-muted-foreground">
+                    {editLetter.direction === 'keluar' ? 'Nama Penerima' : 'Nama Pengirim'} *
+                  </label>
+                  <input
+                    type="text"
+                    name="recipient_or_sender"
+                    required
+                    defaultValue={editLetter.recipient_or_sender}
+                    className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                  />
+                </div>
+                <div className="space-y-1.5">
+                  <label className="text-xs font-medium text-muted-foreground">Tanggal Surat</label>
+                  <input
+                    type="date"
+                    name="letter_date"
+                    defaultValue={editLetter.letter_date}
+                    className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none"
+                  />
+                </div>
+                <DriveInput defaultValue={editLetter.drive_link} />
+                <div className="space-y-1.5 sm:col-span-2">
+                  <label className="text-xs font-medium text-muted-foreground">Catatan</label>
+                  <textarea
+                    name="notes"
+                    rows={2}
+                    defaultValue={editLetter.notes ?? ''}
+                    className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none resize-none"
+                  />
+                </div>
+              </div>
+              <SubmitButton className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90">
+                Simpan Perubahan
+              </SubmitButton>
+            </form>
+          </div>
+        )}
+
         {/* Form catat surat baru */}
         <details className="group rounded-[1.25rem] border border-border bg-card">
           <summary className="flex cursor-pointer items-center gap-2 px-5 py-4 text-sm font-semibold text-foreground select-none">
@@ -132,7 +218,6 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
                 </select>
               </div>
 
-              {/* Khusus surat keluar */}
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Kategori (keluar) *</label>
                 <select name="category" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none">
@@ -152,10 +237,9 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
                   placeholder="mis. SL, HR, ADM"
                   className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm placeholder:text-muted-foreground focus:border-primary focus:outline-none uppercase"
                 />
-                <p className="text-[11px] text-muted-foreground">2–3 huruf kapital, dipakai dalam nomor surat</p>
+                <p className="text-[11px] text-muted-foreground">2–3 huruf, dipakai dalam nomor surat</p>
               </div>
 
-              {/* Nomor surat masuk */}
               <div className="space-y-1.5 sm:col-span-2">
                 <label className="text-xs font-medium text-muted-foreground">Nomor Surat Masuk (jika masuk)</label>
                 <input
@@ -168,14 +252,12 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
 
               <div className="space-y-1.5">
                 <label className="text-xs font-medium text-muted-foreground">Jenis Surat *</label>
-                <div className="flex gap-2">
-                  <select name="letter_type" className="flex-1 rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none">
-                    {LETTER_TYPE_OPTIONS.map(opt => (
-                      <option key={opt.code} value={opt.code}>{opt.label}</option>
-                    ))}
-                    <option value="LIN">Lainnya — isi di bawah</option>
-                  </select>
-                </div>
+                <select name="letter_type" className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm focus:border-primary focus:outline-none">
+                  {LETTER_TYPE_OPTIONS.map(opt => (
+                    <option key={opt.code} value={opt.code}>{opt.label}</option>
+                  ))}
+                  <option value="LIN">Lainnya (LIN)</option>
+                </select>
               </div>
 
               <div className="space-y-1.5">
@@ -210,6 +292,8 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
                 />
               </div>
 
+              <DriveInput />
+
               <div className="space-y-1.5 sm:col-span-2">
                 <label className="text-xs font-medium text-muted-foreground">Catatan</label>
                 <textarea
@@ -236,14 +320,16 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
           ) : (
             (letters ?? []).map((letter: LetterRecord) => {
               const company = companyMap[letter.company_id]
+              const isEditing = editId === letter.id
               return (
                 <div
                   key={letter.id}
-                  className="flex items-start justify-between gap-4 rounded-[1.25rem] border border-border bg-card p-4"
+                  className={`flex items-start justify-between gap-4 rounded-[1.25rem] border bg-card p-4 transition ${
+                    isEditing ? 'border-primary/40 shadow-sm' : 'border-border'
+                  }`}
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      {/* Arah badge */}
                       <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold ${
                         letter.direction === 'keluar'
                           ? 'border-emerald-200 bg-emerald-50 text-emerald-700'
@@ -252,23 +338,18 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
                         {letter.direction === 'keluar' ? '↑ Keluar' : '↓ Masuk'}
                       </span>
 
-                      {/* Kategori badge — hanya keluar */}
                       {letter.category && (
                         <span className={`inline-flex shrink-0 items-center rounded-full border px-2 py-0.5 text-[11px] font-semibold ${CATEGORY_COLORS[letter.category as LetterCategory]}`}>
                           {letter.category} · {LETTER_CATEGORY_LABELS[letter.category as LetterCategory]}
                         </span>
                       )}
 
-                      {/* Jenis surat */}
                       <span className="inline-flex shrink-0 items-center rounded-full border border-border bg-muted px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
                         {letter.letter_type}
                       </span>
 
-                      {/* Company */}
                       {company && (
-                        <span
-                          className="inline-flex shrink-0 items-center gap-1 rounded-full border border-border px-2 py-0.5 text-[11px] font-medium text-muted-foreground"
-                        >
+                        <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-border px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
                           <span className="size-1.5 rounded-full" style={{ backgroundColor: company.color }} />
                           {company.prefix}
                         </span>
@@ -283,6 +364,19 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
                       {letter.direction === 'keluar' ? 'Kepada: ' : 'Dari: '}
                       {letter.recipient_or_sender}
                     </p>
+
+                    {letter.drive_link && (
+                      <a
+                        href={letter.drive_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="mt-1 inline-flex items-center gap-1 text-xs text-primary hover:underline"
+                      >
+                        <ExternalLink className="size-3" />
+                        Buka di Google Drive
+                      </a>
+                    )}
+
                     {letter.notes && (
                       <p className="mt-0.5 text-xs text-muted-foreground italic">{letter.notes}</p>
                     )}
@@ -290,16 +384,25 @@ export default async function LettersPage({ searchParams }: { searchParams: Sear
 
                   <div className="flex flex-col items-end gap-2 shrink-0">
                     <p className="text-xs text-muted-foreground">{letter.letter_date}</p>
-                    <form action={deleteLetterAction}>
-                      <input type="hidden" name="id" value={letter.id} />
-                      <button
-                        type="submit"
-                        className="rounded-lg p-1.5 text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors"
-                        title="Hapus surat"
+                    <div className="flex gap-1">
+                      <Link
+                        href={isEditing ? baseHref : `${baseHref}&edit=${letter.id}`}
+                        className="rounded-lg p-1.5 text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors"
+                        title="Edit surat"
                       >
-                        <Trash2 className="size-3.5" />
-                      </button>
-                    </form>
+                        <Pencil className="size-3.5" />
+                      </Link>
+                      <form action={deleteLetterAction}>
+                        <input type="hidden" name="id" value={letter.id} />
+                        <button
+                          type="submit"
+                          className="rounded-lg p-1.5 text-muted-foreground hover:text-red-600 hover:bg-red-50 transition-colors"
+                          title="Hapus surat"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </button>
+                      </form>
+                    </div>
                   </div>
                 </div>
               )
